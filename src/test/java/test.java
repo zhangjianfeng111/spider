@@ -1,13 +1,13 @@
-import org.beetl.sql.core.*;
-import org.beetl.sql.core.db.DBStyle;
-import org.beetl.sql.core.db.MySqlStyle;
-import org.beetl.sql.ext.DebugInterceptor;
-import org.beetl.sql.ext.gen.GenConfig;
+import cn.hutool.core.date.DateField;
+import cn.hutool.core.date.DateUtil;
+import cn.hutool.poi.excel.ExcelReader;
+import cn.hutool.poi.excel.ExcelUtil;
+import org.beetl.sql.core.SQLManager;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
+import java.util.Date;
+import java.util.List;
 
 /**
  * @Auther: zhang
@@ -16,10 +16,8 @@ import java.net.URL;
  */
 public class test {
 
-    public static void main(String[] args) {
-        String str = "abcdef";
-        for (int i = 0; i < 1000; i++) {
-            str = str + i;
-        }
+
+    public static void main(String[] args) throws IOException {
+        System.out.println(DateUtil.offset(new Date(), DateField.MONTH, 3));
     }
 }
