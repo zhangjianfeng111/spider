@@ -48,7 +48,7 @@ public class UserTask {
     @Autowired
     SQLManager sqlManager;
 
-    @Scheduled(cron = "0/10 * * * * ?")
+//    @Scheduled(cron = "0/10 * * * * ?")
     public void scheduled() throws IOException {
 //        List<UserInfo> list = sqlManager.select("user.selectUserList", UserInfo.class);
         List<UserInfo> list = sqlManager.query(UserInfo.class).andEq("user_id","73059").select();
