@@ -2,6 +2,8 @@ import cn.hutool.core.date.DateField;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.poi.excel.ExcelReader;
 import cn.hutool.poi.excel.ExcelUtil;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.spider.common.AliyunUtil;
 import com.spider.common.miaocang.PicParams;
@@ -28,40 +30,9 @@ public class test {
 
 
     public static void main(String[] args) throws IOException {
-//        SQLManager sqlManager = getSqlManager();
-//        for (int i = 0; i < 10; i++) {
-//            UserInfo userInfo = sqlManager.query(UserInfo.class).orderBy("rand()").single();
-//            System.out.println(userInfo.getUserId());
-//        }
-
-        URL urlModel = new URL("http://img.miaocang.cc/mc/df/201909101144340664.jpg");
-        // 打开连接
-        URLConnection con = urlModel.openConnection();
-        //设置请求超时为5s
-        con.setConnectTimeout(5 * 1000);
-        // 输入流
-        InputStream inputStream = con.getInputStream();
-        // 输出的文件流
-//            File file=new File("/alidata/www/miaoto.net/images/"+System.currentTimeMillis()+".jpg");
-        File file = new File("E:\\" + System.currentTimeMillis() + ".jpg");
-        if (!file.exists()) {
-            file.createNewFile();
-        }
-        OutputStream outputStream = new FileOutputStream(file);
-        int len;
-        byte[] buf = new byte[1024];
-        while ((len = inputStream.read(buf, 0, 1024)) != -1) {
-            outputStream.write(buf, 0, len);
-        }
-        outputStream.flush();
-        inputStream = new FileInputStream(file);
-        String key = AliyunUtil.uploadFile(inputStream, 3);//上传图片
-        System.out.println(key);
-        outputStream.close();
-        inputStream.close();
-        if (file.exists()) {
-            file.delete();
-        }
+        String aaa = "[\"http://img.miaocang.cc/mc/5617532814/201909161714530235.jpg\",\"http://img.miaocang.cc/mc/5617532814/201909161714530312.jpg\",\"http://img.miaocang.cc/mc/5617532814/201909161714530379.jpg\",\"http://img.miaocang.cc/mc/5617532814/201909161714530374.jpg\"]";
+        List<String> array = JSON.parseArray(aaa,String.class);
+        System.out.println(array);
     }
 
     public static SQLManager getSqlManager() {

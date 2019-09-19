@@ -44,7 +44,7 @@ public class WantBuyTask {
     @Scheduled(cron = "0/10 * * * * ?")
     public void scheduled() throws IOException {
         RestTemplate restTemplate = new RestTemplate();
-        for (int i = 7; i > 0; i--) {
+        for (int i = 1; i < 3; i++) {
             ResponseEntity<String> responseEntity = restTemplate
                     .getForEntity(new StringBuilder("http://api.miaocang.cc:12100/api/get_purchase_seedling_page.htm?page=").append(i).toString(), String.class);
             String jsonStr = responseEntity.getBody();
@@ -56,6 +56,7 @@ public class WantBuyTask {
                 List<String> urlList = new ArrayList<>();
                 urlList.add("/header/o_1d4jpnpgp9a71c1a6tr1p8f15ad10.png");
                 urlList.add("/header/defaulthead125%402x.png");
+                urlList.add("/header/o_1d0c13jd11ne8mplutc3b71upfc.png");
                 UserInfo userInfo = sqlManager.query(UserInfo.class)
                         .andNotIn("heed_image_url",urlList)
                         .orderBy("rand()").single();
@@ -73,46 +74,46 @@ public class WantBuyTask {
                 wantBuyNew.setUserId(userInfo.getUserId());//用户id
                 wantBuyNew.setNum(dataBean.getInventory());//数量
 
-//                if (StrUtil.isNotBlank(dataBean.getSample_pic())) {
-//                    List<String> samplePics = dataBean.getSample_pics();
-//                    List<PicParams> picParamsList = new ArrayList<>();
-//                    for (String samplePic : samplePics) {
-//                        // 构造URL
-//                        URL urlModel = new URL(samplePic);
-//                        // 打开连接
-//                        URLConnection con = urlModel.openConnection();
-//                        //设置请求超时为5s
-//                        con.setConnectTimeout(5 * 1000);
-//                        // 输入流
-//                        InputStream inputStream = con.getInputStream();
-//                        // 输出的文件流
-////            File file=new File("/alidata/www/miaoto.net/images/"+System.currentTimeMillis()+".jpg");
-//                        File file = new File("E:\\" + System.currentTimeMillis() + ".jpg");
-//                        if (!file.exists()) {
-//                            file.createNewFile();
-//                        }
-//                        OutputStream outputStream = new FileOutputStream(file);
-//                        int len;
-//                        byte[] buf = new byte[1024];
-//                        while ((len = inputStream.read(buf, 0, 1024)) != -1) {
-//                            outputStream.write(buf, 0, len);
-//                        }
-//                        outputStream.flush();
-//                        inputStream = new FileInputStream(file);
-//                        String key = AliyunUtil.uploadFile(inputStream, 3);//上传图片
-//                        outputStream.close();
-//                        inputStream.close();
-//                        if (file.exists()) {
-//                            file.delete();
-//                        }
-//                        PicParams picParams = new PicParams();
-//                        picParams.setT_url(key);
-//                        picParams.setT_height(new String("").intern());
-//                        picParams.setT_width(new String("").intern());
-//                        picParamsList.add(picParams);
-//                    }
-//                    wantBuyNew.setCover(JSONObject.toJSONString(picParamsList));//图片
-//                }
+                if (StrUtil.isNotBlank(dataBean.getSample_pic())) {
+                    List<String> samplePics = JSON.parseArray(dataBean.getSample_pic(),String.class);
+                    List<PicParams> picParamsList = new ArrayList<>();
+                    for (String samplePic : samplePics) {
+                        // 构造URL
+                        URL urlModel = new URL(samplePic);
+                        // 打开连接
+                        URLConnection con = urlModel.openConnection();
+                        //设置请求超时为5s
+                        con.setConnectTimeout(5 * 1000);
+                        // 输入流
+                        InputStream inputStream = con.getInputStream();
+                        // 输出的文件流
+//            File file=new File("/alidata/www/miaoto.net/images/"+System.currentTimeMillis()+".jpg");
+                        File file = new File("E:\\" + System.currentTimeMillis() + ".jpg");
+                        if (!file.exists()) {
+                            file.createNewFile();
+                        }
+                        OutputStream outputStream = new FileOutputStream(file);
+                        int len;
+                        byte[] buf = new byte[1024];
+                        while ((len = inputStream.read(buf, 0, 1024)) != -1) {
+                            outputStream.write(buf, 0, len);
+                        }
+                        outputStream.flush();
+                        inputStream = new FileInputStream(file);
+                        String key = AliyunUtil.uploadFile(inputStream, 3);//上传图片
+                        outputStream.close();
+                        inputStream.close();
+                        if (file.exists()) {
+                            file.delete();
+                        }
+                        PicParams picParams = new PicParams();
+                        picParams.setT_url(key);
+                        picParams.setT_height(new String("").intern());
+                        picParams.setT_width(new String("").intern());
+                        picParamsList.add(picParams);
+                    }
+                    wantBuyNew.setCover(JSONObject.toJSONString(picParamsList));//图片
+                }
 
                 List<Details> detailsList = dataBean.getDetails();
                 for (Details details : detailsList) {
