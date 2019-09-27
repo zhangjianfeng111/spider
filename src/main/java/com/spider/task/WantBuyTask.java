@@ -1,13 +1,10 @@
 package com.spider.task;
 
+import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.StrUtil;
-import cn.hutool.poi.excel.ExcelReader;
-import cn.hutool.poi.excel.ExcelUtil;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.spider.common.AliyunUtil;
-import com.spider.common.CompanyInfo;
-import com.spider.common.ibeetl.BeetlSQLConfig;
 import com.spider.common.miaocang.*;
 import com.spider.common.pojo.UserInfo;
 import org.beetl.sql.core.SQLManager;
@@ -17,13 +14,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.*;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
@@ -41,7 +34,7 @@ public class WantBuyTask {
     @Autowired
     SQLManager sqlManager;
 
-    @Scheduled(cron = "0/10 * * * * ?")
+//    @Scheduled(cron = "0 0 0/2 * * ?")
     public void scheduled() throws IOException {
         RestTemplate restTemplate = new RestTemplate();
         for (int i = 1; i < 3; i++) {
@@ -50,8 +43,11 @@ public class WantBuyTask {
             String jsonStr = responseEntity.getBody();
             WantBuyList wantBuyList = JSONObject.parseObject(jsonStr, WantBuyList.class);
             List<DataBean> dataBeanList = wantBuyList.getData().getList();
-            String timeStr = " 17:00:00";
+            String createTimeStr;
+            String overTimeStr;
             for (DataBean dataBean : dataBeanList) {
+                createTimeStr = DateUtil.date(dataBean.getItem().getGmtCreate()).toString();
+                overTimeStr = DateUtil.date(dataBean.getItem().getAutoSoldoutTime()).toString();
                 WantBuyNew wantBuyNew = new WantBuyNew();
                 List<String> urlList = new ArrayList<>();
                 urlList.add("/header/o_1d4jpnpgp9a71c1a6tr1p8f15ad10.png");
@@ -65,7 +61,7 @@ public class WantBuyTask {
                 if (seedingName != null) {
                     wantBuyNew.setSeedingNameId(seedingName.getId());//苗木名称id
                     WantBuyNew wantBuyNew2 = sqlManager.query(WantBuyNew.class).andEq("seeding_name_id", seedingName.getId())
-                            .andEq("create_time", dataBean.getCreate_time() + timeStr.intern()).single();
+                            .andEq("create_time", createTimeStr).single();
                     if (wantBuyNew2 != null)//去重
                         break;
                 }else{
@@ -170,8 +166,8 @@ public class WantBuyTask {
                         wantBuyNew.setWantBuyTerm(3);
                         break;
                 }
-                wantBuyNew.setMaturityTime(dataBean.getValid_time() + timeStr.intern());//过期时间
-                wantBuyNew.setCreateTime(dataBean.getCreate_time() + timeStr.intern());//过期时间
+                wantBuyNew.setMaturityTime(overTimeStr);//过期时间
+                wantBuyNew.setCreateTime(createTimeStr);//过期时间
                 wantBuyNew.setModelType(new String("spider").intern());
 
                 sqlManager.insertTemplate(wantBuyNew);

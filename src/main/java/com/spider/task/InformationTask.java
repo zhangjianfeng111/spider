@@ -1,13 +1,10 @@
 package com.spider.task;
 
 import com.spider.common.Information;
-import com.spider.common.pojo.NurseryDetail;
-import com.spider.common.pojo.Supply;
 import org.beetl.sql.core.SQLManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.util.List;

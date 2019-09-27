@@ -1,10 +1,6 @@
 package com.spider.task;
 
-import cn.hutool.poi.excel.ExcelReader;
-import cn.hutool.poi.excel.ExcelUtil;
 import com.spider.common.AliyunUtil;
-import com.spider.common.CompanyInfo;
-import com.spider.common.Constants;
 import com.spider.common.pojo.StudySubjectPpt;
 import org.beetl.sql.core.SQLManager;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +16,6 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
 
@@ -36,9 +31,9 @@ public class StudyTask {
     @Autowired
     private SQLManager sqlManager;
 
-//    @Scheduled(cron = "0/10 * * * * ?")
+    @Scheduled(cron = "0/10 * * * * ?")
     public void scheduled() throws IOException {
-        List<StudySubjectPpt> list = sqlManager.query(StudySubjectPpt.class).select();
+        List<StudySubjectPpt> list = sqlManager.query(StudySubjectPpt.class).andGreat("id",554).select();
         for (StudySubjectPpt studySubjectPpt : list) {
 
             String srcUrl = new StringBuilder("http://imgs.miaoto.net/").append(studySubjectPpt.getPic()).toString();

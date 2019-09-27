@@ -1,4 +1,5 @@
 import cn.hutool.core.date.DateField;
+import cn.hutool.core.date.DateTime;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.poi.excel.ExcelReader;
 import cn.hutool.poi.excel.ExcelUtil;
@@ -30,9 +31,8 @@ public class test {
 
 
     public static void main(String[] args) throws IOException {
-        String aaa = "[\"http://img.miaocang.cc/mc/5617532814/201909161714530235.jpg\",\"http://img.miaocang.cc/mc/5617532814/201909161714530312.jpg\",\"http://img.miaocang.cc/mc/5617532814/201909161714530379.jpg\",\"http://img.miaocang.cc/mc/5617532814/201909161714530374.jpg\"]";
-        List<String> array = JSON.parseArray(aaa,String.class);
-        System.out.println(array);
+        DateTime date3 = DateUtil.date(1569455797000l);
+        System.out.println(date3);
     }
 
     public static SQLManager getSqlManager() {

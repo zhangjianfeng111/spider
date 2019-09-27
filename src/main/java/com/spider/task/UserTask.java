@@ -1,17 +1,7 @@
 package com.spider.task;
 
 import cn.hutool.core.util.StrUtil;
-import cn.hutool.crypto.symmetric.AES;
-import cn.hutool.poi.excel.ExcelReader;
-import cn.hutool.poi.excel.ExcelUtil;
-import cn.wildfirechat.common.ErrorCode;
-import cn.wildfirechat.pojos.InputOutputUserInfo;
-import cn.wildfirechat.pojos.OutputCreateUser;
-import cn.wildfirechat.sdk.UserAdmin;
-import cn.wildfirechat.sdk.model.IMResult;
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.spider.common.CompanyInfo;
 import com.spider.common.pojo.IMRegisterLog;
 import com.spider.common.pojo.UserIM;
 import com.spider.common.pojo.UserInfo;
@@ -24,17 +14,12 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import org.beetl.sql.core.SQLManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.EnableScheduling;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @Auther: zhang
